@@ -1,10 +1,11 @@
 import { useState } from "react";
-
+import logo from "../src/assets/logo.png";
 import "./App.css";
 
 function App() {
   const [tickets, setTickets] = useState([]);
   const [ticketCount, setTicketCount] = useState(0);
+  const [price, setPrice] = useState("২০ টাকা");
   const [eventName, setEventName] = useState("রওশন পরিবারের আনন্দ ভ্রমণ ২০২৫");
 
   const generateRandomTicketNumber = () => {
@@ -21,16 +22,23 @@ function App() {
 
   return (
     <div className="container-fluid">
-      <h2 className="my-4 text-center" id="no-print">
-        Event Ticket Generator
-      </h2>
       <div className="mb-4" id="no-print">
+        <h2 className="my-4 text-center" id="no-print">
+          Event Ticket Generator
+        </h2>
         <input
           type="number"
           min="1"
           value={ticketCount}
           onChange={(e) => setTicketCount(e.target.value)}
           placeholder="Enter number of tickets"
+          className="form-control mb-3"
+        />
+        <input
+          type="text"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+          placeholder="Enter Price of tickets"
           className="form-control mb-3"
         />
         <input
@@ -44,26 +52,27 @@ function App() {
           Generate Raffle Tickets
         </button>
       </div>
-
       <div id="ticketSection" className="row">
         {tickets.map((ticket) => (
           <div key={ticket.id} className="col-md-4 mb-3">
-            <div
-              className="d-flex gap-2 align-item-middle"
-              style={{ border: "1px dashed #000" }}
-            >
-              <div
-                className="p-3 w-100"
-                style={{ borderRight: "1px dashed #000" }}
-              >
-                <p>{eventName}</p>
-                <p className="fw-bold">Ticket #{ticket.id}</p>
-                <small>আয়োজক কপি </small>
+            <div className="d-flex gap-2 align-item-middle rounded-4">
+              <div className=" w-100 ticket-card ticket-watermark">
+                <div className="ticket-content">
+                  <p className="m-0 p-0">{eventName}</p>
+                  <p className="fw-bold m-0">Ticket #{ticket.id}</p>
+                  <small>আয়োজক কপি </small>
+                  <br />
+                  <small>{price}</small>
+                </div>
               </div>
-              <div className="p-3 w-100">
-                <p>{eventName}</p>
-                <p className="fw-bold">Ticket #{ticket.id}</p>
-                <small>প্রতিযোগী কপি</small>
+              <div className=" w-100 ticket-card ticket-watermark">
+                <div className="ticket-content">
+                  <p className="m-0 p-0">{eventName}</p>
+                  <p className="fw-bold m-0">Ticket #{ticket.id}</p>
+                  <small>প্রতিযোগী কপি</small>
+                  <br />
+                  <small>{price}</small>
+                </div>
               </div>
             </div>
           </div>
