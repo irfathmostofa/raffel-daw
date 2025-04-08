@@ -1,4 +1,4 @@
-name: Deploy to cPanel via SSH test 6
+name: Deploy to cPanel via SSH test 7
 
 on:
   push:
