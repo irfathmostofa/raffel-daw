@@ -1,19 +1,24 @@
+name: 🚀 Deploy website on push
+
 on:
   push:
-    - main
-name: 🚀 Deploy website on push
+    branches:
+      - main
+
 jobs:
   web-deploy:
-    name: 🎉 Deploy
+    name: 🎉 Deploy to FTP
     runs-on: ubuntu-latest
+
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      - name: 📂 Sync files
+      - name: 📂 Sync files to FTP server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.mpairproject.xyz
           username: ftp_user@mpairproject.xyz
           password: ${{ secrets.ftp_password }}
           server-dir: /gitlabserver.mpairproject.xyz/
+          protocol: ftp
