@@ -4,7 +4,7 @@ import "./App.css";
 
 function App() {
   const [tickets, setTickets] = useState([]);
-  const [ticketCount, setTicketCount] = useState(0);
+  const [ticketCount, setTicketCount] = useState(3);
   const [price, setPrice] = useState("২০ টাকা");
   const [eventName, setEventName] = useState("রওশন পরিবারের আনন্দ ভ্রমণ ২০২৫");
 
@@ -19,7 +19,9 @@ function App() {
     }));
     setTickets(newTickets);
   };
-
+  const print = () => {
+    window.print();
+  };
   return (
     <div className="container-fluid">
       <div className="mb-4" id="no-print">
@@ -48,9 +50,14 @@ function App() {
           placeholder="Enter event name"
           className="form-control mb-3"
         />
-        <button className="btn btn-primary w-100" onClick={generateTickets}>
-          Generate Raffle Tickets
-        </button>
+        <div className="d-flex gap-5 ">
+          <button className="btn btn-primary w-100" onClick={generateTickets}>
+            Generate Raffle Tickets
+          </button>
+          <button className="btn btn-primary w-100" onClick={print}>
+            Print
+          </button>
+        </div>
       </div>
       <div id="ticketSection" className="row">
         {tickets.map((ticket) => (
