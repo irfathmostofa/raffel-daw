@@ -1,9 +1,9 @@
-name: Deploy to cPanel via SSH test 6
+name: Deploy to cPanel via SSH
 
 on:
   push:
     branches:
-      - main # Change if you use a different branch like 'master'
+      - main  # Adjust this to your desired branch
 
 jobs:
   deploy:
@@ -16,8 +16,19 @@ jobs:
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}  # Your SSH private key
+
+      - name: Test SSH connection
+        run: |
+          echo "Testing SSH connection..."
+          ssh -o StrictHostKeyChecking=no -T ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} "echo 'SSH connection successful'"
 
       - name: Deploy to cPanel via rsync
         run: |
-          rsync -avz --delete ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.REMOTE_PATH }}
+          echo "Starting deployment..."
+          rsync -avz --delete ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.REMOTE_PATH }} || exit 1
+          echo "Deployment completed"
+
+      - name: Cleanup
+        run: |
+          echo "Cleaning up..."
