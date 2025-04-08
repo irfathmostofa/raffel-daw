@@ -14,6 +14,6 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftp.mpairproject.xyz
-          username: ftp_user
+          username: ftp_user@mpairproject.xyz
           password: ${{ secrets.ftp_password }}
           server-dir: /gitlabserver.mpairproject.xyz/
