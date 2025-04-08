@@ -21,4 +21,4 @@ jobs:
           username: ftp_user@mpairproject.xyz
           password: ${{ secrets.ftp_password }}
           server-dir: /gitlabserver.mpairproject.xyz/
-          protocol: ftp
+          protocol: ftps
