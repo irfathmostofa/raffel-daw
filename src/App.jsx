@@ -28,7 +28,7 @@ function App() {
         </h2>
         <input
           type="number"
-          min="1"
+          min="3"
           value={ticketCount}
           onChange={(e) => setTicketCount(e.target.value)}
           placeholder="Enter number of tickets"
