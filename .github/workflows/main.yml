@@ -1,25 +1,23 @@
-name: 🚀 Deploy website on push
+name: Deploy to cPanel via SSH
 
 on:
   push:
     branches:
-      - main
+      - main # Change if you use a different branch like 'master'
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy to FTP
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚚 Get latest code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: 📂 Sync files to FTP server
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          server: ftp.mpairproject.xyz
-          username: ftp_user@mpairproject.xyz
-          password: ${{ secrets.ftp_password }}
-          server-dir: /gitlabserver.mpairproject.xyz/
-          protocol: ftps
-          passive: true
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to cPanel via rsync
+        run: |
+          rsync -avz --delete ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.REMOTE_PATH }}
