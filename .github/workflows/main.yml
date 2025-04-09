@@ -33,3 +33,6 @@ jobs:
           dangerous-clean-slate: true
           server-dir: /home/mpairproject/gitlabserver.mpairproject.xyz/
           local-dir: ./dist/
+          protocol: ftp
+          port: 21
+          passive: true
