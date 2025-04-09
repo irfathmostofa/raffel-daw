@@ -32,6 +32,5 @@ jobs:
           password: ${{ secrets.ftp_password }}
           passive: true
           local-dir: ./dist/
-          port: 21
           timeout: 300
           dangerous-clean-slate: true
