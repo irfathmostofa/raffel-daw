@@ -1,4 +1,42 @@
-name: 🚀 Deploy website on push
+# name: 🚀 Deploy website on push
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   web-deploy:
+#     name: 🎉 Deploy
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: 🚚 Get latest code
+#         uses: actions/checkout@v4
+
+#       - name: 🧰 Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "18"
+
+#       - name: 🔨 Build Project
+#         run: |
+#           npm install
+#           npm run build
+
+#       - name: 📂 Sync files via FTP
+#         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+#         with:
+#           server: ${{ secrets.ftp_server }}
+#           username: ${{ secrets.ftp_user }}
+#           password: ${{ secrets.ftp_password }}
+#           dangerous-clean-slate: true
+#           server-dir: /home/mpairproject/gitlabserver.mpairproject.xyz/
+#           local-dir: ./dist/
+#           protocol: ftp
+#           port: 21
+#           passive: true
+name: 🚀 Deploy React App via SSH
 
 on:
   push:
@@ -6,33 +44,28 @@ on:
       - main
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚚 Get latest code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v4
 
-      - name: 🧰 Setup Node.js
+      - name: 🟢 Setup Node.js (for React app)
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: 18
 
-      - name: 🔨 Build Project
+      - name: 📦 Install Dependencies & Build React App
         run: |
           npm install
           npm run build
 
-      - name: 📂 Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: 🔐 Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.5.3
         with:
-          server: ${{ secrets.ftp_server }}
-          username: ${{ secrets.ftp_user }}
-          password: ${{ secrets.ftp_password }}
-          dangerous-clean-slate: true
-          server-dir: /home/mpairproject/gitlabserver.mpairproject.xyz/
-          local-dir: ./dist/
-          protocol: ftp
-          port: 21
-          passive: true
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: 📂 Deploy with rsync (React Build)
+        run: |
+          rsync -avz --delete ./build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.REMOTE_PATH }}
