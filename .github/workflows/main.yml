@@ -1,42 +1,4 @@
-# name: 🚀 Deploy website on push
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   web-deploy:
-#     name: 🎉 Deploy
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: 🚚 Get latest code
-#         uses: actions/checkout@v4
-
-#       - name: 🧰 Setup Node.js
-#         uses: actions/setup-node@v3
-#         with:
-#           node-version: "18"
-
-#       - name: 🔨 Build Project
-#         run: |
-#           npm install
-#           npm run build
-
-#       - name: 📂 Sync files via FTP
-#         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-#         with:
-#           server: ${{ secrets.ftp_server }}
-#           username: ${{ secrets.ftp_user }}
-#           password: ${{ secrets.ftp_password }}
-#           dangerous-clean-slate: true
-#           server-dir: /home/mpairproject/gitlabserver.mpairproject.xyz/
-#           local-dir: ./dist/
-#           protocol: ftp
-#           port: 21
-#           passive: true
-name: 🚀 Deploy React App via SSH
+name: 🚀 Deploy website on push
 
 on:
   push:
@@ -44,29 +6,30 @@ on:
       - main
 
 jobs:
-  deploy:
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout Code
+      - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js (for React app)
+      - name: 🧰 Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: "18"
 
-      - name: 📦 Install Dependencies & Build React App
+      - name: 🔨 Build Project
         run: |
           npm install
           npm run build
 
-      - name: 🔐 Setup SSH Agent
-        uses: webfactory/ssh-agent@v0.5.3
+      - name: 📂 Sync files via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-passphrase: ${{ secrets.SSH_PASSPHRASE }}
-
-      - name: 📂 Deploy with rsync (React Build)
-        run: |
-          rsync -avz --delete ./build/ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:${{ secrets.REMOTE_PATH }}
+          server: ${{ secrets.ftp_server }}
+          username: ${{ secrets.ftp_user }}
+          password: ${{ secrets.ftp_password }}
+          dangerous-clean-slate: true
+          passive: true
+          local-dir: ./dist/
